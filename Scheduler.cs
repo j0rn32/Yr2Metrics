@@ -23,8 +23,8 @@ public class Scheduler : BackgroundService
             {
                 Log.LogInformation("Scheduler activated.");
                 var weather = await YrApi.GetWeatherData();
-                WeatherCache.Set(weather.temp, weather.windspeed, weather.direction);
-                await Task.Delay(TimeSpan.FromMinutes(30), stopToken);
+                WeatherCache.Set(weather.temp, weather.windSpeed, weather.windDirection, weather.precipitation, weather.humidity, weather.windGust);
+                await Task.Delay(TimeSpan.FromMinutes(15), stopToken);
             }
             catch (TaskCanceledException)
             {

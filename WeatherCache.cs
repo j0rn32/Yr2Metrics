@@ -1,7 +1,7 @@
 public interface IWeatherCache
 {
-    void Set(float? temp, float? windspeed, float? direction);
-    (float? temp, float? windspeed, float? direction) Get();
+    void Set(float? temp, float? windSpeed, float? windDirection, float? precipitation, float? humidity, float? windGust);
+    (float? temp, float? windSpeed, float? windDirection, float? precipitation, float? humidity, float? windGust) Get();
 }
 
 public class WeatherCache : IWeatherCache
@@ -9,7 +9,13 @@ public class WeatherCache : IWeatherCache
     private float? Temperature;
     private float? WindSpeed;
     private float? WindDirection;
+    private float? Precipitation;
+    private float? Humidity;
+    private float? WindSpeedGust;
 
-    public void Set(float? temp, float? windspeed, float? direction) => (Temperature, WindSpeed, WindDirection) = (temp, windspeed, direction);
-    public (float? temp, float? windspeed, float? direction) Get() => (Temperature, WindSpeed, WindDirection);
+    public void Set(float? temp, float? windSpeed, float? windDirection, float? precipitation, float? humidity, float? windGust) =>
+        (Temperature, WindSpeed, WindDirection, Precipitation, Humidity, WindSpeedGust) = (temp, windSpeed, windDirection, precipitation, humidity, windGust);
+
+    public (float? temp, float? windSpeed, float? windDirection, float? precipitation, float? humidity, float? windGust) Get() =>
+        (Temperature, WindSpeed, WindDirection, Precipitation, Humidity, WindSpeedGust);
 }

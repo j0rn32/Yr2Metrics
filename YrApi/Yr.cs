@@ -1,6 +1,6 @@
 public interface IYrApi
 {
-    Task<(float? temp, float? windspeed, float? direction)> GetWeatherData(float latitude = 59.13f, float longitude = 10.16f);
+    Task<(float? temp, float? windSpeed, float? windDirection, float? precipitation, float? humidity, float? windGust)> GetWeatherData(float latitude = 59.13f, float longitude = 10.16f);
 }
 
 public class YrApi : IYrApi
@@ -25,7 +25,7 @@ public class YrApi : IYrApi
         Location = (config.Latitude, config.Longitude);
     }
 
-    public async Task<(float? temp, float? windspeed, float? direction)> GetWeatherData(float latitude = 59.13f, float longitude = 10.16f)
+    public async Task<(float? temp, float? windSpeed, float? windDirection, float? precipitation, float? humidity, float? windGust)> GetWeatherData(float latitude = 59.13f, float longitude = 10.16f)
     {
         var url = BaseUrl + $"lat={Location.lat:0.00}&lon={Location.lon:0.00}";
 
@@ -34,17 +34,17 @@ public class YrApi : IYrApi
         var webResponse = await Client.GetAsync(url);
 
         if (webResponse.StatusCode == HttpStatusCode.NotFound) // 404 NotFound means no data aviable
-            return (0, 0, 0);
+            return (0, 0, 0, 0, 0, 0);
         if (webResponse.StatusCode == HttpStatusCode.PreconditionFailed) // 412 No time series found for this combination of parameters, check /observations/availableTimeSeries for more information.
-            return (0, 0, 0);
+            return (0, 0, 0, 0, 0, 0);
 
         if (webResponse.StatusCode != HttpStatusCode.OK)
-            return (0, 0, 0);
+            return (0, 0, 0, 0, 0, 0);
 
         var response = await webResponse.Content.ReadAsStringAsync();
 
         var frost = JsonSerializer.Deserialize<NowCastObservation>(response);
         var r = frost.properties.timeseries.First().data.instant.details;
-        return (r.air_temperature, r.wind_speed, r.wind_from_direction);
+        return (r.air_temperature, r.wind_speed, r.wind_from_direction, r.precipitation_rate, r.relative_humidity, r.wind_speed_of_gust);
     }
 }
