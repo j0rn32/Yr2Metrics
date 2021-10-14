@@ -22,4 +22,4 @@ Run with parameters interactive:
 ```docker run -i --rm -p 80:80 -e "Yr:UserAgent"="me meATmail.com" -e "Yr:Latitude"=99 -e "Yr:Longitude"=33 -t yr2metrics```
 
 Docker run with parameters:
-```docker run --rm --restart unless-stopped -p 80:80 -e "Yr:UserAgent"="me meATmail.com" -e "Yr:Latitude"=99 -e "Yr:Longitude"=33 -t yr2metrics```
+```docker run -d --restart unless-stopped -p 80:80 -e "Yr:UserAgent"="me meATmail.com" -e "Yr:Latitude"=99 -e "Yr:Longitude"=33 -t yr2metrics```
